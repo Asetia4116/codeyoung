@@ -1,0 +1,95 @@
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+import java.awt.*;
+public class Main
+// test
+{
+    public static void main (String args[])
+    {
+        new Menu();
+    }
+}
+class Menu extends JFrame implements ActionListener
+{
+    JMenu file, edit, view;
+    JMenuItem i1, i2, i3, i4, i5, i6, i7;
+    JTextArea ta;
+    Menu()
+    {
+        JFrame f=new JFrame("Menu and MenuItem Example");
+        try
+        {
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch (Exception e)
+        {
+            System.err.println("Error setting look and feel:"+e);
+        }
+
+        JMenuBar mb=new JMenuBar();
+        file=new JMenu("file");
+        edit=new JMenu("edit");
+        view=new JMenu("view");
+        i1=new JMenuItem("new");
+        i2=new JMenuItem("save");
+        i3=new JMenuItem("print");
+        i4=new JMenuItem("copy");
+        i5=new JMenuItem("paste");
+        i6=new JMenuItem("zoom in");
+        i7=new JMenuItem("zoom out");
+        ta=new JTextArea();
+        ta.setBounds(5,5,360,320);
+
+        i1.addActionListener(this);
+        i2.addActionListener(this);
+        i3.addActionListener(this);
+        i4.addActionListener(this);
+        i5.addActionListener(this);
+        i6.addActionListener(this);
+        i7.addActionListener(this);
+
+        file.add(i1);
+        file.add(i2);
+        file.add(i3);
+        edit.add(i4);
+        edit.add(i5);
+        view.add(i6);
+        view.add(i7);
+        mb.add(file);
+        mb.add(edit);
+        mb.add(view);
+        f.add(ta);
+        f.setJMenuBar(mb);
+        f.setSize(400,400);
+        f.setLayout(null);
+        f.setVisible(true);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    public void actionPerformed(ActionEvent e)
+    {
+        String command= e.getActionCommand();
+
+        switch (command)
+        {
+            case "new":
+            ta.setText("");
+            break;
+            case "save":
+            JFileChooser saveChooser=new JFileChooser();
+            int saveResponse=saveChooser.showSaveDialog(this);
+            if (saveResponse == JFileChooser.APPROVE_OPTION)
+            {
+                File file= saveChooser.getSelectedFile();
+                try (BufferedWriter writer=new BufferedWriter(new FileWriter(file)))
+                {
+                ta.write(writer);
+            }catch (IOException IoException)
+            {
+//                JOptionPane.showMessageDialog(this, "File could not be saved:"+IoExecption.getMessage());
+            }
+            break;
+        }
+    }
+}
+}
